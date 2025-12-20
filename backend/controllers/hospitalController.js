@@ -7,9 +7,10 @@ const getHospitals = async (req, res) => {
     const { test } = req.query;
 
     // Find hospitals that have this test
-    const hospitals = await Hospital.find({
-      "tests.testName": { $regex: test, $options: "i" }
-    });
+    // const hospitals = await Hospital.find({
+    //   "tests.testName": { $regex: test, $options: "i" }
+    // });
+    const hospitals = await Hospital.find();
 
     res.json(hospitals);
   } catch (err) {
