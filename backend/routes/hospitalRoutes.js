@@ -12,9 +12,12 @@ const {
 router.get('/', getHospitals);
 router.get('/:id', getHospitalById);
 
+
+const adminAuth = require("../middleware/adminAuth");
+
 // Admin routes
-router.post('/', addHospital);
-router.put('/:id', updateHospital);
-router.delete('/:id', deleteHospital);
+router.post('/', adminAuth, addHospital);
+router.put('/:id', adminAuth, updateHospital);
+router.delete('/:id', adminAuth, deleteHospital);
 
 module.exports = router;
