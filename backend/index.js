@@ -12,14 +12,17 @@ const testRoutes = require('./routes/testRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
+
+const adminRoutes = require("./routes/adminRoutes");
+
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/hospitals', hospitalRoutes);
-
 app.use('/api/tests', testRoutes);
-
 app.use('/api/reviews', reviewRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 connectDB();
 
