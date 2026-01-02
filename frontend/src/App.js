@@ -14,9 +14,11 @@ function App() {
     <BrowserRouter>
 
       <Routes>
-        <Route path="/" element={<Navigate to="/admin/login" replace />} />
+        {/* <Route path="/" element={<Navigate to="/admin/login" replace />} /> */}
+        <Route path="/" element={<Navigate to="/hospitals" />} />
 
-        <Route path="/admin/login" element={<AdminLogin />} />
+
+        <Route path="/admin/login" element={<AdminLogin />} />   
         {/* <Route path="/admin" element={<AdminDashboard />} /> */
         /* <Route path="/admin/hospitals" element={<ViewHospitals />} />
         <Route path="/admin/add-hospital" element={<AddHospital />} />
