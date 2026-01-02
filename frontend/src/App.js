@@ -6,6 +6,7 @@ import AddHospital from "./pages/AddHospital";
 import EditHospital from "./pages/EditHospital";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRoute from "./components/AdminRoute";
+import PublicHospitals from "./pages/PublicHospitals"; 
 
 function App() {
 
@@ -40,6 +41,12 @@ function App() {
           }
         />
 
+        <Route 
+          path="/hospitals" 
+          element={<PublicHospitals 
+          />
+          } 
+        />
         <Route
           path="/admin/edit-hospital/:id"
           element={
