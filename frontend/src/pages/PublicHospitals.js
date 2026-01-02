@@ -5,6 +5,10 @@ function PublicHospitals() {
   const [hospitals, setHospitals] = useState([]);
   const [search, setSearch] = useState("");
   const [recommended, setRecommended] = useState(null);
+  // const [reviewText, setReviewText] = useState("");
+  const [reviewText, setReviewText] = useState({});
+
+
 
   // fetch hospitals
   useEffect(() => {
@@ -26,8 +30,41 @@ function PublicHospitals() {
     setRecommended(best);
   };
 
+
+
+
+
+const submitReview = async (hospitalId) => {
+  const comment = reviewText[hospitalId];
+
+  if (!comment) {
+    alert("Write a review first");
+    return;
+  }
+
+    try {
+      await axios.post(
+        `http://localhost:5000/api/hospitals/${hospitalId}/review`,
+        { comment }
+      );
+
+      alert("Review submitted");
+      setReviewText({
+      ...reviewText,
+      [hospitalId]: ""
+    });
+
+      // refresh hospitals to show new review
+      const res = await axios.get("http://localhost:5000/api/hospitals");
+      setHospitals(res.data);
+    } catch (err) {
+      alert("Failed to submit review");
+    }
+  };
+
   return (
-    <div>
+    <div style={{ maxWidth: "800px", margin: "auto", fontFamily: "Arial" }}>
+
       <h2>Diagnostic Cost Comparison</h2>
 
       {/* Search */}
@@ -68,12 +105,38 @@ function PublicHospitals() {
               ))}
           </ul>
 
-          {/* Fake Review */}
-          <button
-            onClick={() => alert("Thank you for your feedback!")}
-          >
-            Leave Review
-          </button>
+
+
+{/* Review input */}
+<input
+  type="text"
+  placeholder="Write a review"
+  value={reviewText[hospital._id] || ""}
+  onChange={(e) =>
+    setReviewText({
+      ...reviewText,
+      [hospital._id]: e.target.value
+    })
+  }
+/>
+
+
+<button onClick={() => submitReview(hospital._id)}>
+  Submit Review
+</button>
+
+{/* Show reviews */}
+{hospital.reviews && hospital.reviews.length > 0 && (
+  <>
+    <h4>Reviews:</h4>
+    <ul>
+      {hospital.reviews.map((r, i) => (
+        <li key={i}>{r.comment}</li>
+      ))}
+    </ul>
+  </>
+)}
+
         </div>
       ))}
     </div>

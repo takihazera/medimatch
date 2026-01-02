@@ -10,6 +10,15 @@ const hospitalSchema = new mongoose.Schema({
       price: { type: Number, required: true },
     },
   ],
+    reviews: [
+    {
+      comment: String,
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model('Hospital', hospitalSchema);
