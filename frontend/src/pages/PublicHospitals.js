@@ -1,6 +1,58 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const styles = {
+  container: {
+    maxWidth: "900px",
+    margin: "40px auto",
+    fontFamily: "Segoe UI, sans-serif",
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+  },
+  searchBar: {
+    display: "flex",
+    gap: "10px",
+    marginBottom: "20px",
+  },
+  input: {
+    flex: 1,
+    padding: "10px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+  },
+  button: {
+    padding: "10px 16px",
+    borderRadius: "6px",
+    border: "none",
+    backgroundColor: "#2563eb",
+    color: "#fff",
+    cursor: "pointer",
+  },
+  card: {
+    background: "#fff",
+    borderRadius: "10px",
+    padding: "16px",
+    marginBottom: "16px",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+  },
+  muted: {
+    color: "#555",
+    fontSize: "14px",
+  },
+  reviewBox: {
+    display: "flex",
+    gap: "10px",
+    marginTop: "10px",
+  },
+};
+
+
+
+
+
 function PublicHospitals() {
   const [hospitals, setHospitals] = useState([]);
   const [search, setSearch] = useState("");
@@ -33,14 +85,13 @@ function PublicHospitals() {
 
 
 
+  const submitReview = async (hospitalId) => {
+    const comment = reviewText[hospitalId];
 
-const submitReview = async (hospitalId) => {
-  const comment = reviewText[hospitalId];
-
-  if (!comment) {
-    alert("Write a review first");
-    return;
-  }
+    if (!comment) {
+      alert("Write a review first");
+      return;
+    }
 
     try {
       await axios.post(
@@ -50,9 +101,9 @@ const submitReview = async (hospitalId) => {
 
       alert("Review submitted");
       setReviewText({
-      ...reviewText,
-      [hospitalId]: ""
-    });
+        ...reviewText,
+        [hospitalId]: ""
+      });
 
       // refresh hospitals to show new review
       const res = await axios.get("http://localhost:5000/api/hospitals");
@@ -63,34 +114,39 @@ const submitReview = async (hospitalId) => {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", fontFamily: "Arial" }}>
 
-      <h2>Diagnostic Cost Comparison</h2>
+    <div style={styles.container}>
 
-      {/* Search */}
-      <input
-        placeholder="Search test name (e.g. CBC)"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <h2 style={styles.title}>🏥 Diagnostic Cost Comparison</h2>
 
-      <button onClick={findBestOption}>Best Option</button>
 
-      {/* AI Result */}
+
+      <div style={styles.searchBar}>
+        <input
+          style={styles.input}
+          placeholder="Search test name (e.g. CBC)"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button style={styles.button} onClick={findBestOption}>
+          Best Option
+        </button>
+      </div>
+
+
       {recommended && (
-        <p>
+        <p style={{ textAlign: "center", marginBottom: "20px" }}>
           ✅ Recommended: <b>{recommended.name}</b> (Rating: {recommended.rating})
         </p>
       )}
 
-      <hr />
 
-      {/* Hospital List */}
+
       {hospitals.map((hospital) => (
-        <div key={hospital._id} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
+        <div key={hospital._id} style={styles.card}>
           <h3>{hospital.name}</h3>
-          <p>Rating: {hospital.rating}</p>
-          <p>Address: {hospital.address}</p>
+          <p style={styles.muted}>Rating: {hospital.rating}</p>
+          <p style={styles.muted}>Address: {hospital.address}</p>
 
           <b>Tests:</b>
           <ul>
@@ -107,35 +163,36 @@ const submitReview = async (hospitalId) => {
 
 
 
-{/* Review input */}
-<input
-  type="text"
-  placeholder="Write a review"
-  value={reviewText[hospital._id] || ""}
-  onChange={(e) =>
-    setReviewText({
-      ...reviewText,
-      [hospital._id]: e.target.value
-    })
-  }
-/>
+<div style={styles.reviewBox}>
+            <input
+              style={styles.input}
+              type="text"
+              placeholder="Write a review"
+              value={reviewText[hospital._id] || ""}
+              onChange={(e) =>
+                setReviewText({
+                  ...reviewText,
+                  [hospital._id]: e.target.value
+                })
+              }
+            />
 
 
-<button onClick={() => submitReview(hospital._id)}>
-  Submit Review
-</button>
+            <button style={{ ...styles.button, backgroundColor: "#16a34a" }} onClick={() => submitReview(hospital._id)}>
+              Submit
+            </button>
+          </div>
 
-{/* Show reviews */}
-{hospital.reviews && hospital.reviews.length > 0 && (
-  <>
-    <h4>Reviews:</h4>
-    <ul>
-      {hospital.reviews.map((r, i) => (
-        <li key={i}>{r.comment}</li>
-      ))}
-    </ul>
-  </>
-)}
+
+          
+          {hospital.reviews?.length > 0 && (
+            <>
+              <h4 style={{ marginTop: "12px" }}>Reviews</h4>
+              <ul>       {hospital.reviews.map((r, i) => (
+                <li key={i} style={styles.muted}>{r.comment}</li>
+              ))}    </ul>
+            </>
+          )}
 
         </div>
       ))}
@@ -143,4 +200,4 @@ const submitReview = async (hospitalId) => {
   );
 }
 
-export default PublicHospitals;
+  export default PublicHospitals;
