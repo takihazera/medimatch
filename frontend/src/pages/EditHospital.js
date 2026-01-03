@@ -48,7 +48,17 @@ const styles = {
     border: "1px solid #cbd5e1",
     fontSize: "14px",
     outline: "none",
+    boxSizing: "border-box",
   },
+  label: {
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#334155",
+    marginBottom: "6px",
+    display: "block",
+  },
+
+
   testGroup: {
     display: "flex",
     gap: "12px",
@@ -138,6 +148,7 @@ const EditHospital = () => {
       <div style={styles.card}>
         <h2 style={styles.title}>Edit Hospital</h2>
         <form onSubmit={handleSubmit}>
+          <label style={styles.label}>Hospital Name</label>
           <input
             name="name"
             value={hospital.name}
@@ -147,6 +158,8 @@ const EditHospital = () => {
             style={styles.input}
           />
 
+
+          <label style={styles.label}>Address</label>
           <input
             name="address"
             value={hospital.address}
@@ -156,6 +169,8 @@ const EditHospital = () => {
             style={styles.input}
           />
 
+
+          <label style={styles.label}>Rating</label>
           <input
             name="rating"
             type="number"
@@ -167,6 +182,39 @@ const EditHospital = () => {
             style={styles.input}
           />
 
+<h4>Tests</h4>
+
+{hospital.tests.map((test, index) => (
+  <div key={index} style={styles.testGroup}>
+    <div style={{ flex: 2 }}>
+      <label style={styles.label}>Test Name</label>
+      <input
+        name="testName"
+        value={test.testName}
+        onChange={(e) => handleTestChange(index, e)}
+        placeholder="Test Name"
+        required
+        style={styles.input}
+      />
+    </div>
+
+    <div style={{ flex: 1 }}>
+      <label style={styles.label}>Price</label>
+      <input
+        name="price"
+        type="number"
+        value={test.price}
+        onChange={(e) => handleTestChange(index, e)}
+        placeholder="Price"
+        required
+        style={styles.input}
+      />
+    </div>
+  </div>
+))}
+
+
+          {/* 
           <h4>Tests</h4>
           {hospital.tests?.map((test, index) => (
             <div key={index} style={styles.testGroup}>
@@ -188,7 +236,7 @@ const EditHospital = () => {
                 style={{ ...styles.input, flex: "1" }}
               />
             </div>
-          ))}
+          ))} */}
 
           <button
             type="submit"

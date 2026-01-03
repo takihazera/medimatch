@@ -11,8 +11,12 @@
 
 
 // import React, { useState } from "react";
+//=================================================
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 
 const styles = {
@@ -38,15 +42,17 @@ const styles = {
     textAlign: "center",
     marginBottom: "24px",
   },
-  input: {
-    width: "100%",
-    padding: "10px 14px",
-    marginBottom: "16px",
-    borderRadius: "8px",
-    border: "1px solid #cbd5e1",
-    fontSize: "14px",
-    outline: "none",
-  },
+input: {
+  width: "100%",
+  padding: "10px 14px",
+  marginBottom: "16px",
+  borderRadius: "8px",
+  border: "1px solid #cbd5e1",
+  fontSize: "14px",
+  outline: "none",
+  boxSizing: "border-box", 
+},
+
   testGroup: {
     display: "flex",
     gap: "12px",
@@ -75,11 +81,14 @@ const styles = {
   },
 };
 
+
+
+
 const AddHospital = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
-
-  // 🔐 Admin protection
+console.log("ADMIN TOKEN:", token);
+  // Admin protection
   useEffect(() => {
     if (!token) {
       navigate("/admin/login");
@@ -93,15 +102,29 @@ const AddHospital = () => {
     tests: [{ testName: "", price: "" }],
   });
 
-  const handleChange = (e) => {
-    setHospital({ ...hospital, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setHospital({ ...hospital, [e.target.name]: e.target.value });
+  // };
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setHospital({
+    ...hospital,
+    [name]: name === "rating" ? Number(value) : value,
+  });
+};
 
-  const handleTestChange = (index, e) => {
-    const updatedTests = [...hospital.tests];
-    updatedTests[index][e.target.name] = e.target.value;
-    setHospital({ ...hospital, tests: updatedTests });
-  };
+  // const handleTestChange = (index, e) => {
+  //   const updatedTests = [...hospital.tests];
+  //   updatedTests[index][e.target.name] = e.target.value;
+  //   setHospital({ ...hospital, tests: updatedTests });
+  // };
+const handleTestChange = (index, e) => {
+  const updatedTests = [...hospital.tests];
+  updatedTests[index][e.target.name] =
+    e.target.name === "price" ? Number(e.target.value) : e.target.value;
+
+  setHospital({ ...hospital, tests: updatedTests });
+};
 
   const addTestField = () => {
     setHospital({
@@ -112,12 +135,34 @@ const AddHospital = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:5000/api/hospitals", hospital, {
+    // try {
+    //   await axios.post("http://localhost:5000/api/hospitals", hospital, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+////new
+  const token = localStorage.getItem("adminToken");
+  if (!token) {
+    alert("You are not logged in as admin!");
+    navigate("/admin/login");
+    return;
+  }
+
+  try {
+    await axios.post(
+      "http://localhost:5000/api/hospitals",
+      hospital, // send hospital state
+      {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      });
+      }
+    );
+
+
+
       alert("Hospital added successfully!");
       // Reset form
       setHospital({
@@ -128,7 +173,7 @@ const AddHospital = () => {
       });
     } catch (err) {
       console.error(err);
-      alert("Error adding hospital");
+      alert("Error adding hospital: " + err.response?.data?.message || err.message);
     }
   };
 
