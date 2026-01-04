@@ -27,7 +27,7 @@ const styles = {
     fontFamily: "Segoe UI, system-ui, sans-serif",
     backgroundColor: "#f8fafc", // off-white outer container
     borderRadius: "14px",
-  },
+  }, 
   card: {
     backgroundColor: "#ffffff", // white card
     padding: "24px",
