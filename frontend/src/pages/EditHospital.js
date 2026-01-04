@@ -94,7 +94,7 @@ const EditHospital = () => {
     tests: [],
   });
 
-  // 🔐 Admin protection + fetch existing hospital
+  // Admin protection + fetch existing hospital
   useEffect(() => {
     if (!token) {
       navigate("/admin/login");

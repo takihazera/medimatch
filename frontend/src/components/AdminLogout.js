@@ -121,7 +121,7 @@ function AdminLogout() {
           onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.95)")}
           onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
         >
-          🚪 Logout
+           Logout
         </button>
       </div>
     </div>

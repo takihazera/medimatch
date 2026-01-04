@@ -96,7 +96,7 @@ function ViewHospitals() {
   const [hospitals, setHospitals] = useState([]);
   const token = localStorage.getItem("adminToken");
 
-  // 🔐 Admin protection + fetch
+  // Admin protection + fetch
   useEffect(() => {
     if (!token) {
       navigate("/admin/login");
