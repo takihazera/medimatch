@@ -27,7 +27,7 @@ const styles = {
     fontFamily: "Segoe UI, system-ui, sans-serif",
     backgroundColor: "#f8fafc", // off-white outer container
     borderRadius: "14px",
-  }, 
+  },
   card: {
     backgroundColor: "#ffffff", // white card
     padding: "24px",
@@ -42,16 +42,16 @@ const styles = {
     textAlign: "center",
     marginBottom: "24px",
   },
-input: {
-  width: "100%",
-  padding: "10px 14px",
-  marginBottom: "16px",
-  borderRadius: "8px",
-  border: "1px solid #cbd5e1",
-  fontSize: "14px",
-  outline: "none",
-  boxSizing: "border-box", 
-},
+  input: {
+    width: "100%",
+    padding: "10px 14px",
+    marginBottom: "16px",
+    borderRadius: "8px",
+    border: "1px solid #cbd5e1",
+    fontSize: "14px",
+    outline: "none",
+    boxSizing: "border-box",
+  },
 
   testGroup: {
     display: "flex",
@@ -87,7 +87,7 @@ input: {
 const AddHospital = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
-console.log("ADMIN TOKEN:", token);
+  console.log("ADMIN TOKEN:", token);
   // Admin protection
   useEffect(() => {
     if (!token) {
@@ -105,26 +105,26 @@ console.log("ADMIN TOKEN:", token);
   // const handleChange = (e) => {
   //   setHospital({ ...hospital, [e.target.name]: e.target.value });
   // };
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setHospital({
-    ...hospital,
-    [name]: name === "rating" ? Number(value) : value,
-  });
-};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setHospital({
+      ...hospital,
+      [name]: name === "rating" ? Number(value) : value,
+    });
+  };
 
   // const handleTestChange = (index, e) => {
   //   const updatedTests = [...hospital.tests];
   //   updatedTests[index][e.target.name] = e.target.value;
   //   setHospital({ ...hospital, tests: updatedTests });
   // };
-const handleTestChange = (index, e) => {
-  const updatedTests = [...hospital.tests];
-  updatedTests[index][e.target.name] =
-    e.target.name === "price" ? Number(e.target.value) : e.target.value;
+  const handleTestChange = (index, e) => {
+    const updatedTests = [...hospital.tests];
+    updatedTests[index][e.target.name] =
+      e.target.name === "price" ? Number(e.target.value) : e.target.value;
 
-  setHospital({ ...hospital, tests: updatedTests });
-};
+    setHospital({ ...hospital, tests: updatedTests });
+  };
 
   const addTestField = () => {
     setHospital({
@@ -141,25 +141,25 @@ const handleTestChange = (index, e) => {
     //       Authorization: `Bearer ${token}`,
     //     },
     //   });
-////new
-  const token = localStorage.getItem("adminToken");
-  if (!token) {
-    alert("You are not logged in as admin!");
-    navigate("/admin/login");
-    return;
-  }
+    ////new
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      alert("You are not logged in as admin!");
+      navigate("/admin/login");
+      return;
+    }
 
-  try {
-    await axios.post(
-      "http://localhost:5000/api/hospitals",
-      hospital, // send hospital state
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    try {
+      await axios.post(
+        "http://localhost:5000/api/hospitals",
+        hospital, // send hospital state
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
 
 
@@ -182,6 +182,9 @@ const handleTestChange = (index, e) => {
       <div style={styles.card}>
         <h2 style={styles.title}>Add Hospital</h2>
         <form onSubmit={handleSubmit}>
+<label style={{ fontWeight: "700", marginBottom: "6px", display: "block" }}>
+  Hospital Name
+</label>
           <input
             name="name"
             placeholder="Hospital Name"
@@ -191,6 +194,10 @@ const handleTestChange = (index, e) => {
             style={styles.input}
           />
 
+<label style={{ fontWeight: "700", marginBottom: "6px", display: "block" }}>
+  Address
+</label>
+
           <input
             name="address"
             placeholder="Address"
@@ -199,6 +206,9 @@ const handleTestChange = (index, e) => {
             required
             style={styles.input}
           />
+<label style={{ fontWeight: "700", marginBottom: "6px", display: "block" }}>
+  Rating
+</label>
 
           <input
             name="rating"
@@ -214,6 +224,7 @@ const handleTestChange = (index, e) => {
           <h4>Tests</h4>
           {hospital.tests.map((test, index) => (
             <div key={index} style={styles.testGroup}>
+              
               <input
                 name="testName"
                 placeholder="Test Name"
