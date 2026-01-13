@@ -11,7 +11,7 @@ function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+
     try {
       const res = await axios.post(
         "http://localhost:5000/api/admin/login",
@@ -21,8 +21,8 @@ function AdminLogin() {
       // localStorage.setItem("adminToken", res.data.token);
       // console.log(localStorage.getItem("adminToken")); // 🔍 check if saved
       // store token
-    //   localStorage.setItem("adminToken", res.data.token);
-    localStorage.setItem("adminToken", res.data.token);
+      //   localStorage.setItem("adminToken", res.data.token);
+      localStorage.setItem("adminToken", res.data.token);
 
 
       navigate("/admin/hospitals");
@@ -32,7 +32,16 @@ function AdminLogin() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "30vh",
+        flexDirection: "column",
+      }}
+    >
+
       <h2>Admin Login</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -55,8 +64,14 @@ function AdminLogin() {
           required
         />
         <br />
-
-        <button type="submit">Login</button>
+        <br></br>
+        <button
+          type="submit"
+          style={{
+            display: "block",
+            margin: "0 auto",
+          }}
+        >Login</button>
       </form>
     </div>
   );
